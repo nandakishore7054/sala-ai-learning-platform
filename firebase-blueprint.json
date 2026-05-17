@@ -1,0 +1,77 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["student", "teacher"] },
+        "learningStyle": { "type": "string", "enum": ["visual", "auditory", "kinesthetic", "none"] },
+        "domain": { "type": "string" },
+        "points": { "type": "number" },
+        "badges": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "LearningPath": {
+      "title": "Learning Path",
+      "description": "Cached AI-generated learning modules for a domain and style",
+      "type": "object",
+      "properties": {
+        "domain": { "type": "string" },
+        "learningStyle": { "type": "string" },
+        "modules": { "type": "array" }
+      },
+      "required": ["domain", "learningStyle", "modules"]
+    },
+    "QuizResult": {
+      "title": "Quiz Result",
+      "description": "Results of a learning module quiz",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "moduleId": { "type": "string" },
+        "module": { "type": "string" },
+        "score": { "type": "number" },
+        "totalQuestions": { "type": "number" },
+        "completedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "moduleId", "score", "completedAt"]
+    },
+    "Progress": {
+      "title": "Progress",
+      "description": "Individual course completion tracking",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "moduleId": { "type": "string" },
+        "courseId": { "type": "string" },
+        "completed": { "type": "boolean" },
+        "completedAt": { "type": "string", "format": "date-time" },
+        "pointsEarned": { "type": "number" }
+      },
+      "required": ["userId", "moduleId", "courseId", "completed"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "learning_paths/{pathId}": {
+      "schema": "LearningPath",
+      "description": "Cached learning paths"
+    },
+    "quizResults/{resultId}": {
+      "schema": "QuizResult",
+      "description": "Historical quiz results"
+    },
+    "progress/{progressId}": {
+      "schema": "Progress",
+      "description": "Course-level progress tracking"
+    }
+  }
+}

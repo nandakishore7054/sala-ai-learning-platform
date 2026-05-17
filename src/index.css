@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 font-sans transition-all duration-200;
+  }
+
+  /* Font Size Controls */
+  html.text-small { font-size: 14px; }
+  html.text-medium { font-size: 16px; }
+  html.text-large { font-size: 20px; }
+
+  /* High Contrast Mode */
+  html.high-contrast {
+    --slate-50: #000000;
+    --slate-100: #111111;
+    --slate-200: #ffffff;
+    --slate-900: #ffffff;
+    --indigo-600: #ffff00;
+    --indigo-700: #ffff00;
+  }
+
+  html.high-contrast body {
+    @apply bg-black text-white;
+  }
+
+  html.high-contrast .bg-white {
+    @apply bg-black border-2 border-white;
+  }
+
+  html.high-contrast .text-slate-600,
+  html.high-contrast .text-slate-500,
+  html.high-contrast .text-slate-400 {
+    @apply text-white;
+  }
+
+  html.high-contrast .bg-indigo-600 {
+    @apply bg-yellow-400 text-black;
+  }
+
+  /* Simple Navigation Mode */
+  html.simple-nav * {
+    box-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  html.simple-nav .blur-3xl,
+  html.simple-nav .backdrop-blur-md {
+    display: none !important;
+  }
+}
+
+.glass {
+  @apply bg-white/80 backdrop-blur-md border border-white/20;
+}
+
+.card-hover {
+  @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+}

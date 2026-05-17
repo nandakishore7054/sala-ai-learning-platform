@@ -1,0 +1,107 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Fields: uid, name, email, role, learningStyle, domain, points, badges
+    //
+    // Collection: learning_paths
+    // Fields: domain, learningStyle, modules
+    //
+    // Collection: quizResults
+    // Fields: userId, moduleId, module, score, totalQuestions, completedAt
+    //
+    // Collection: progress
+    // Fields: userId, moduleId, courseId, completed, completedAt, pointsEarned
+    //
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isVerified() {
+      return isAuthenticated() && request.auth.token.email_verified == true;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isVerifiedOwner(userId) {
+      return isVerified() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isVerified() && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+         (request.auth.token.email == "chinni030314@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    function isTeacher() {
+      return isVerified() && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'teacher' || isAdmin());
+    }
+
+    // Domain Validators
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'email', 'role']) &&
+             data.uid is string &&
+             data.email is string &&
+             data.role in ['student', 'teacher', 'admin'] &&
+             (!('points' in data) || data.points is number) &&
+             (!('badges' in data) || data.badges is list);
+    }
+
+    function isValidLearningPath(data) {
+      return data.keys().hasAll(['domain', 'learningStyle', 'modules']) &&
+             data.domain is string &&
+             data.learningStyle is string &&
+             data.modules is list;
+    }
+
+    function isValidQuizResult(data) {
+      return data.keys().hasAll(['userId', 'moduleId', 'score', 'completedAt']) &&
+             data.userId == request.auth.uid &&
+             data.score is number &&
+             data.score >= 0;
+    }
+
+    function isValidProgress(data) {
+      return data.keys().hasAll(['userId', 'moduleId', 'courseId', 'completed']) &&
+             data.userId == request.auth.uid &&
+             data.completed is bool;
+    }
+
+    // Rules
+    match /users/{userId} {
+      allow read: if isVerifiedOwner(userId) || (isTeacher() && resource.data.role == 'student');
+      allow create: if isOwner(userId) && isValidUser(request.resource.data);
+      allow update: if isVerifiedOwner(userId) && isValidUser(request.resource.data) && 
+                    (request.resource.data.role == resource.data.role || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    match /learning_paths/{pathId} {
+      allow read: if isVerified();
+      allow write: if isVerified() && isValidLearningPath(request.resource.data);
+    }
+
+    match /quizResults/{resultId} {
+      allow read: if isVerified() && (resource.data.userId == request.auth.uid || isTeacher());
+      allow create: if isVerified() && isValidQuizResult(request.resource.data);
+      allow update, delete: if false;
+    }
+
+    match /progress/{progressId} {
+      allow read: if isVerified() && (resource.data.userId == request.auth.uid || isTeacher());
+      allow create: if isVerified() && isValidProgress(request.resource.data);
+      allow update: if isVerified() && resource.data.userId == request.auth.uid && isValidProgress(request.resource.data);
+      allow delete: if false;
+    }
+  }
+}
