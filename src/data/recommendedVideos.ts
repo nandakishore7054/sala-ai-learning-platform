@@ -116,4 +116,29 @@ export const recommendedVideos: Record<
     thumbnail:
       "https://img.youtube.com/vi/aircAruvnKk/maxresdefault.jpg",
   },
+
+    // =========================
+  // CSS FOUNDATIONS
+  // =========================
+
+  "The CSS Box Model": {
+    title: "CSS Box Model Explained",
+    url: "https://www.youtube.com/watch?v=rIO5326FgPE",
+    thumbnail:
+      "https://img.youtube.com/vi/rIO5326FgPE/maxresdefault.jpg",
+  },
+
+  "Selectors and Specificity": {
+    title: "CSS Selectors and Specificity Tutorial",
+    url: "https://www.youtube.com/watch?v=l1mER1bV0N0",
+    thumbnail:
+      "https://img.youtube.com/vi/l1mER1bV0N0/maxresdefault.jpg",
+  },
+
+  "Colors and Typography": {
+    title: "CSS Typography and Color Theory for Web Design",
+    url: "https://www.youtube.com/watch?v=1Rs2ND1ryYc",
+    thumbnail:
+      "https://img.youtube.com/vi/1Rs2ND1ryYc/maxresdefault.jpg",
+  },
 };

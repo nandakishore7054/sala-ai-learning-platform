@@ -421,3 +421,56 @@ try {
     return null;
   }
 }
+// -------------------- CHAT AGENT --------------------
+
+export async function askChatAgent(
+  message: string,
+  context: string
+) {
+  try {
+    const prompt = `
+You are SALA AI Assistant inside a premium adaptive learning platform.
+
+Current Page:
+${context}
+
+Student Message:
+${message}
+
+Rules:
+- Be beginner friendly
+- Give concise answers
+- Help students learn concepts clearly
+- Sound modern and supportive
+- Use clean formatting
+- Keep answers short unless user asks detailed explanation
+- Add emojis naturally
+`;
+
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are a smart AI learning assistant helping students understand concepts clearly.",
+        },
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      temperature: 1,
+      max_tokens: 500,
+    });
+
+    return (
+      completion.choices[0]?.message?.content ||
+      "Sorry, I couldn't generate a response."
+    );
+  } catch (error) {
+    console.error("Chat Agent Error:", error);
+
+    return "AI assistant is currently unavailable.";
+  }
+}

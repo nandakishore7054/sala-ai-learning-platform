@@ -14,8 +14,8 @@ import VerifyEmail from './components/VerifyEmail';
 import AccessibilityPanel from './components/AccessibilityPanel';
 import { AccessibilityProvider } from './context/AccessibilityContext';
 import { Loader2, LogOut, BookOpen, LayoutDashboard, GraduationCap, Trophy, Sun, Moon } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
-
+import { motion, AnimatePresence } from 'framer-motion';
+import ChatAgent from './components/ChatAgent';
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -106,8 +106,20 @@ export default function App() {
     }
 
     return (
-      <div className={`min-h-screen flex flex-col transition-colors duration-300 ${darkMode ? 'bg-slate-900 text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
-        <nav className={`border-b sticky top-0 z-50 transition-colors duration-300 ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}`}>
+      <div
+  className={`min-h-screen flex flex-col transition-all duration-500 ${
+    darkMode
+      ? 'bg-[#071028] text-white'
+      : 'bg-slate-50 text-slate-900'
+  }`}
+>
+        <nav
+  className={`sticky top-0 z-50 border-b backdrop-blur-2xl transition-all duration-500 ${
+    darkMode
+      ? 'bg-[#071028]/80 border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.45)]'
+      : 'bg-white/80 border-slate-200'
+  }`}
+>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16">
               <div className="flex items-center gap-2">
@@ -120,7 +132,11 @@ export default function App() {
               <div className="flex items-center gap-4">
                 <button 
                   onClick={toggleDarkMode}
-                  className={`p-2 rounded-full transition-colors ${darkMode ? 'bg-slate-700 text-yellow-400 hover:bg-slate-600' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                  className={`p-3 rounded-2xl transition-all duration-300 border ${
+  darkMode
+    ? 'bg-white/5 border-white/10 text-yellow-300 hover:bg-white/10 shadow-lg shadow-indigo-500/10'
+    : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-100'
+}`}
                 >
                   {darkMode ? <Sun size={20} /> : <Moon size={20} />}
                 </button>
@@ -161,7 +177,15 @@ export default function App() {
           </div>
         </nav>
 
-        <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        <main className="relative flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+  
+  {darkMode && (
+    <>
+      <div className="absolute top-0 left-0 w-96 h-96 bg-indigo-500/10 blur-3xl rounded-full pointer-events-none" />
+
+      <div className="absolute bottom-0 right-0 w-[30rem] h-[30rem] bg-cyan-500/10 blur-3xl rounded-full pointer-events-none" />
+    </>
+  )}
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}
@@ -204,6 +228,7 @@ export default function App() {
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       <AccessibilityPanel />
+      <ChatAgent />
     </AccessibilityProvider>
   );
 }

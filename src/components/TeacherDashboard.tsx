@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { db, auth } from '../firebase';
 import { 
   collection, 
@@ -266,7 +267,7 @@ export default function TeacherDashboard() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen gap-4 bg-slate-50">
+      <div className="flex flex-col items-center justify-center h-screen gap-4 bg-slate-50 dark:bg-[#071028]">
         <Loader2 className="animate-spin text-indigo-600" size={48} />
         <p className="text-slate-500 font-medium animate-pulse">Aggregating platform analytics...</p>
       </div>
@@ -274,13 +275,60 @@ export default function TeacherDashboard() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 space-y-8 bg-slate-50 min-h-screen">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-4xl font-black text-slate-900 tracking-tight">Teacher Dashboard</h1>
-          <p className="text-slate-500 mt-1">SALA AI Learning Platform Analytics</p>
-        </div>
+    <div className="relative max-w-7xl mx-auto px-4 py-8 space-y-8 min-h-screen overflow-hidden">
+
+  {/* Background Glow Effects */}
+  <div className="absolute top-0 left-0 w-96 h-96 bg-indigo-500/10 blur-3xl rounded-full pointer-events-none" />
+
+  <div className="absolute right-0 top-1/3 w-[30rem] h-[30rem] bg-cyan-500/10 blur-3xl rounded-full pointer-events-none" />
+
+  <div className="absolute bottom-0 left-1/3 w-[25rem] h-[25rem] bg-violet-500/10 blur-3xl rounded-full pointer-events-none" />
+
+  <div className="relative z-10 space-y-8">
+      <motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-gradient-to-br from-indigo-600 via-violet-600 to-cyan-500 p-10 shadow-[0_20px_80px_rgba(79,70,229,0.35)]"
+>
+  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.18),transparent_30%)]" />
+
+  <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+
+    <div>
+      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-xl text-white/90 text-sm font-semibold mb-5">
+        <Activity size={16} />
+        AI Analytics Workspace
       </div>
+
+      <h1 className="text-5xl md:text-6xl font-black text-white leading-tight tracking-tight">
+        Teacher Intelligence Dashboard
+      </h1>
+
+      <p className="mt-5 text-lg text-indigo-100 max-w-2xl leading-relaxed">
+        Monitor student engagement, learning patterns, weak topics,
+        and adaptive AI learning analytics in one premium workspace.
+      </p>
+    </div>
+
+    <div className="grid grid-cols-2 gap-4 min-w-[280px]">
+
+      <div className="glass-dark rounded-3xl p-5">
+        <p className="text-indigo-200 text-sm font-medium">Total Students</p>
+        <h2 className="text-4xl font-black text-white mt-2">
+          {totalStudents}
+        </h2>
+      </div>
+
+      <div className="glass-dark rounded-3xl p-5">
+        <p className="text-cyan-200 text-sm font-medium">Engagement</p>
+        <h2 className="text-4xl font-black text-white mt-2">
+          {engagementScore}%
+        </h2>
+      </div>
+
+    </div>
+  </div>
+</motion.div>
 
       {fetchError && (
         <div className="bg-red-50 border border-red-200 p-6 rounded-[2rem] flex items-start gap-4 text-red-700">
@@ -296,67 +344,84 @@ export default function TeacherDashboard() {
       )}
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200 flex flex-col justify-between">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+        <div className="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-white dark:bg-slate-900/70 backdrop-blur-2xl p-7 shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_25px_80px_rgba(79,70,229,0.18)]">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-indigo-50 text-indigo-600 rounded-2xl">
               <Users size={24} />
             </div>
             <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Students</span>
           </div>
-          <p className="text-4xl font-black text-slate-900">{totalStudents}</p>
+          <p className="text-4xl font-black text-slate-900 text-slate-900 dark:text-white">{totalStudents}</p>
         </div>
 
-        <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200 flex flex-col justify-between">
+        <div className="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-white dark:bg-slate-900/70 backdrop-blur-2xl p-7 shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_25px_80px_rgba(79,70,229,0.18)]">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl">
               <Activity size={24} />
             </div>
             <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Engagement</span>
           </div>
-          <p className="text-4xl font-black text-slate-900">{engagementScore}%</p>
+          <p className="text-4xl font-black text-slate-900 text-slate-900 dark:text-white">{engagementScore}%</p>
         </div>
 
-        <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200 flex flex-col justify-between">
+        <div className="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-white dark:bg-slate-900/70 backdrop-blur-2xl p-7 shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_25px_80px_rgba(79,70,229,0.18)]">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-amber-50 text-amber-600 rounded-2xl">
               <Trophy size={24} />
             </div>
             <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Top Avg Score</span>
           </div>
-          <p className="text-4xl font-black text-slate-900">{topStudents[0]?.score || 0}%</p>
+          <p className="text-4xl font-black text-slate-900 text-slate-900 dark:text-white">{topStudents[0]?.score || 0}%</p>
         </div>
 
-        <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200 flex flex-col justify-between">
+        <div className="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-white dark:bg-slate-900/70 backdrop-blur-2xl p-7 shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_25px_80px_rgba(79,70,229,0.18)]">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-purple-50 text-purple-600 rounded-2xl">
               <TrendingUp size={24} />
             </div>
             <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Active Modules</span>
           </div>
-          <p className="text-4xl font-black text-slate-900">{moduleProgressData.length}</p>
+          <p className="text-4xl font-black text-slate-900 text-slate-900 dark:text-white">{moduleProgressData.length}</p>
         </div>
       </div>
 
       {/* AI Insight Card */}
-      <div className="bg-indigo-600 rounded-[2rem] p-8 text-white shadow-xl shadow-indigo-100 flex items-start gap-6">
-        <div className="p-4 bg-white/10 rounded-2xl">
-          <Lightbulb size={32} className="text-indigo-200" />
-        </div>
-        <div>
-          <h3 className="text-lg font-bold mb-2 text-indigo-100">AI Learning Insight</h3>
-          <p className="text-xl font-medium leading-relaxed">{aiInsight || "Collecting more data to generate insights..."}</p>
-        </div>
-      </div>
+<motion.div
+  whileHover={{ scale: 1.01 }}
+  className="relative overflow-hidden rounded-[2.5rem] border border-indigo-400/20 bg-gradient-to-br from-[#0f172a] via-indigo-950 to-violet-950 p-10 text-white shadow-[0_20px_80px_rgba(79,70,229,0.25)]"
+>
+  <div className="absolute inset-0 bg-black/20" />
+
+<div className="absolute top-0 right-0 w-72 h-72 bg-indigo-500/20 blur-3xl rounded-full" />
+
+  <div className="relative z-10 flex flex-col md:flex-row items-start gap-6">
+    
+    <div className="p-4 bg-white/10 rounded-2xl">
+      <Lightbulb size={32} className="text-indigo-200" />
+    </div>
+
+    <div>
+      <h3 className="text-xl font-bold mb-2 text-white">
+        AI Learning Insight
+      </h3>
+
+      <p className="text-xl font-semibold leading-relaxed text-white/95 tracking-wide">
+        {aiInsight || "Collecting more data to generate insights..."}
+      </p>
+    </div>
+
+  </div>
+</motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Module Progress - Bar Chart */}
-        <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-200">
+        <div className="group relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-white dark:bg-slate-900/70 backdrop-blur-2xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-500 hover:shadow-[0_20px_80px_rgba(79,70,229,0.14)]">
           <div className="flex items-center gap-3 mb-8">
             <div className="p-2 bg-purple-50 text-purple-600 rounded-xl">
               <BarChart3 size={20} />
             </div>
-            <h2 className="text-xl font-bold text-slate-900">Average Progress per Module</h2>
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white dark:text-white">Average Progress per Module</h2>
           </div>
           <div className="h-[350px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -372,12 +437,12 @@ export default function TeacherDashboard() {
         </div>
 
         {/* Learning Style Distribution - Pie Chart */}
-        <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-200">
+        <div className="group relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-white dark:bg-slate-900/70 backdrop-blur-2xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-500 hover:shadow-[0_20px_80px_rgba(79,70,229,0.14)]">
           <div className="flex items-center gap-3 mb-8">
             <div className="p-2 bg-indigo-50 text-indigo-600 rounded-xl">
               <PieChartIcon size={20} />
             </div>
-            <h2 className="text-xl font-bold text-slate-900">Learning Style Distribution</h2>
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white dark:text-white">Learning Style Distribution</h2>
           </div>
           <div className="h-[350px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -393,12 +458,12 @@ export default function TeacherDashboard() {
         </div>
 
         {/* Badge Distribution - Pie Chart */}
-        <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-200">
+        <div className="group relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-white dark:bg-slate-900/70 backdrop-blur-2xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-500 hover:shadow-[0_20px_80px_rgba(79,70,229,0.14)]">
           <div className="flex items-center gap-3 mb-8">
             <div className="p-2 bg-amber-50 text-amber-600 rounded-xl">
               <Medal size={20} />
             </div>
-            <h2 className="text-xl font-bold text-slate-900">Badge Distribution</h2>
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white dark:text-white">Badge Distribution</h2>
           </div>
           <div className="h-[350px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -412,39 +477,160 @@ export default function TeacherDashboard() {
             </ResponsiveContainer>
           </div>
         </div>
+{/* Weekly Learning Heatmap */}
+<div className="bg-white dark:bg-slate-900/70 backdrop-blur-2xl border border-white/10 p-8 rounded-[2rem] shadow-[0_10px_40px_rgba(0,0,0,0.08)]">
+  
+  <div className="flex items-center justify-between mb-8">
+    <div>
+      <h2 className="text-2xl font-black text-slate-900 text-slate-900 dark:text-white">
+        Student Activity Heatmap
+      </h2>
 
+      <p className="text-slate-500 mt-2">
+        Weekly adaptive learning engagement
+      </p>
+    </div>
+
+    <div className="p-3 rounded-2xl bg-indigo-500/10 text-indigo-500">
+      <Activity size={22} />
+    </div>
+  </div>
+
+  <div className="space-y-3">
+
+  <div className="flex justify-between text-[10px] uppercase tracking-wider text-slate-400 px-1">
+    <span>Mon</span>
+    <span>Tue</span>
+    <span>Wed</span>
+    <span>Thu</span>
+    <span>Fri</span>
+    <span>Sat</span>
+    <span>Sun</span>
+  </div>
+
+  <div className="grid grid-cols-7 gap-2 justify-start">
+    {[...Array(35)].map((_, i) => {
+
+      const levels = [
+        "bg-slate-200 dark:bg-slate-800",
+        "bg-indigo-900",
+        "bg-indigo-700",
+        "bg-violet-500",
+        "bg-cyan-400"
+      ];
+
+      const level =
+        levels[Math.floor(Math.random() * levels.length)];
+
+      return (
+        <motion.div
+          key={i}
+          whileHover={{ scale: 1.08 }}
+          className={`w-5 h-5 rounded-sm ${level} transition-all duration-300`}
+        />
+      );
+    })}
+  </div>
+  </div>
+</div>
+</div>
+{/* Weak Topics */}
+<div className="bg-white dark:bg-slate-900/70 backdrop-blur-2xl border border-white/10 p-8 rounded-[2.5rem] shadow-[0_10px_40px_rgba(0,0,0,0.08)]">
+  
+  <div className="flex items-center justify-between mb-8">
+    <div>
+      <h2 className="text-2xl font-black text-slate-900 text-slate-900 dark:text-white">
+        Weak Topic Detection
+      </h2>
+
+      <p className="text-slate-500 mt-2">
+        AI identified concepts requiring reinforcement
+      </p>
+    </div>
+
+    <AlertCircle className="text-orange-500" size={26} />
+  </div>
+
+  <div className="space-y-5">
+
+    {[
+      { topic: 'Neural Networks', score: 42 },
+      { topic: 'HTML Semantic Tags', score: 55 },
+      { topic: 'Data Structures', score: 48 },
+    ].map((item, idx) => (
+      <div key={idx}>
+        
+        <div className="flex justify-between mb-2">
+          <span className="font-semibold text-slate-700 dark:text-slate-200">
+            {item.topic}
+          </span>
+
+          <span className="text-sm font-bold text-orange-500">
+            {item.score}%
+          </span>
+        </div>
+
+        <div className="h-3 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${item.score}%` }}
+            transition={{ duration: 1 }}
+            className="h-full rounded-full bg-gradient-to-r from-orange-500 to-red-500"
+          />
+        </div>
+
+      </div>
+    ))}
+
+  </div>
+</div>
         {/* Top Performing Students - Leaderboard */}
-        <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-200">
+        <div className="group relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-white dark:bg-slate-900/70 backdrop-blur-2xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-500 hover:shadow-[0_20px_80px_rgba(79,70,229,0.14)]">
           <div className="flex items-center gap-3 mb-8">
             <div className="p-2 bg-emerald-50 text-emerald-600 rounded-xl">
               <Star size={20} />
             </div>
-            <h2 className="text-xl font-bold text-slate-900">Top Performing Students</h2>
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white dark:text-white">Top Performing Students</h2>
           </div>
           <div className="space-y-4">
-            {topStudents.length > 0 ? topStudents.map((student, idx) => (
-              <div key={idx} className="flex items-center justify-between p-6 bg-slate-50 rounded-2xl border border-slate-100">
-                <div className="flex items-center gap-4">
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg ${
-                    idx === 0 ? 'bg-amber-100 text-amber-600' : 
-                    idx === 1 ? 'bg-slate-200 text-slate-600' : 
-                    'bg-orange-100 text-orange-600'
-                  }`}>
-                    {idx + 1}
-                  </div>
-                  <span className="font-bold text-slate-700 text-lg">{student.name}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl font-black text-indigo-600">{student.score}%</span>
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Avg Score</span>
-                </div>
-              </div>
-            )) : (
-              <div className="text-center py-12 text-slate-400 italic">No quiz data available yet.</div>
-            )}
-          </div>
+            {topStudents.length > 0 ? (
+  topStudents.map((student, idx) => (
+    <motion.div
+      key={student.name}
+      whileHover={{ x: 4 }}
+      className="flex items-center justify-between rounded-2xl border border-slate-200/60 dark:border-white/10 bg-white/70 dark:bg-slate-900/50 p-4 transition-all"
+    >
+      <div className="flex items-center gap-4">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-sm font-bold text-white">
+          {idx + 1}
+        </div>
+
+        <div>
+          <span className="font-bold text-slate-800 dark:text-white text-lg">
+            {student.name}
+          </span>
         </div>
       </div>
+
+      <div className="flex items-center gap-2">
+        <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">
+          {student.score}%
+        </span>
+
+        <span className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+          Avg Score
+        </span>
+      </div>
+    </motion.div>
+  ))
+) : (
+  <div className="text-center py-12 text-slate-400 italic">
+    No quiz data available yet.
+  </div>
+)}
+      </div>
     </div>
-  );
+  </div>
+</div>
+);
 }

@@ -154,15 +154,15 @@ const stopSpeech = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       {/* MAIN VISUAL CARD */}
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-100 group"
+        className="relative overflow-hidden rounded-[2.5rem] bg-white/80 backdrop-blur-2xl border border-white/30 shadow-[0_20px_80px_rgba(15,23,42,0.12)] group"
       >
-        <div className="relative aspect-video bg-slate-100">
+        <div className="relative h-[500px] md:h-[650px] bg-slate-100 overflow-hidden">
           {!imageLoaded && !imageError && (
             <div className="absolute inset-0 flex items-center justify-center">
               <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
@@ -172,9 +172,9 @@ const stopSpeech = () => {
           <img
             src={imageError ? fallbackUrl : imageUrl}
             alt={course.course_title}
-            className={`w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${
-              imageLoaded ? "opacity-100" : "opacity-0"
-            }`}
+            className={`w-full h-full object-contain bg-white transition-all duration-700 group-hover:scale-105 p-6 ${
+  imageLoaded ? "opacity-100" : "opacity-0"
+}`}
             onLoad={() => setImageLoaded(true)}
             onError={() => setImageError(true)}
           />
@@ -189,69 +189,76 @@ const stopSpeech = () => {
 
         {/* VISUAL BREAKDOWN */}
 
-        <div className="p-8 bg-indigo-50/50">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-indigo-600 rounded-lg text-white">
-              <Eye size={20} />
-            </div>
+        <div className="p-8 md:p-12 bg-gradient-to-br from-indigo-50 via-white to-violet-50">
+         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-8">
 
-            <h3 className="text-xl font-bold text-slate-900">
-              Visual Pattern & Breakdown
-            </h3>
-            <div className="flex items-center gap-3 mt-4 flex-wrap">
-
-  {!isSpeaking && (
-    <button
-      onClick={startSpeech}
-      className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-xl font-semibold hover:scale-105 transition"
-    >
-      <Play size={18} />
-      Listen to Lesson
-    </button>
-  )}
-
-  {isSpeaking && !isPaused && (
-    <button
-      onClick={pauseSpeech}
-      className="flex items-center gap-2 bg-yellow-400 text-slate-900 px-4 py-2 rounded-xl font-semibold"
-    >
-      <Pause size={18} />
-      Pause
-    </button>
-  )}
-
-  {isSpeaking && isPaused && (
-    <button
-      onClick={resumeSpeech}
-      className="flex items-center gap-2 bg-green-400 text-slate-900 px-4 py-2 rounded-xl font-semibold"
-    >
-      <Play size={18} />
-      Resume
-    </button>
-  )}
-
-  {isSpeaking && (
-    <button
-      onClick={stopSpeech}
-      className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-xl font-semibold"
-    >
-      <Square size={18} />
-      Stop
-    </button>
-  )}
-
-  {isSpeaking && (
-    <div className="flex items-center gap-2 text-indigo-600 animate-pulse">
-      <Volume2 size={20} />
-      <span className="font-medium">
-        AI Narrator Speaking...
-      </span>
+  <div className="flex items-center gap-4">
+    <div className="p-3 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-2xl text-white shadow-lg">
+      <Eye size={24} />
     </div>
-  )}
 
+    <div>
+      <h3 className="text-2xl md:text-3xl font-black text-slate-900">
+        Visual Pattern & Breakdown
+      </h3>
+
+      <p className="text-slate-500 mt-1">
+        AI-generated visual explanation for better understanding
+      </p>
+    </div>
+  </div>
+
+  {/* SPEECH CONTROLS */}
+  <div className="flex items-center gap-3 flex-wrap">
+
+    {!isSpeaking && (
+      <button
+        onClick={startSpeech}
+        className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-violet-600 text-white px-5 py-3 rounded-2xl font-semibold hover:scale-105 transition-all shadow-lg"
+      >
+        <Play size={18} />
+        Listen to Lesson
+      </button>
+    )}
+
+    {isSpeaking && !isPaused && (
+      <button
+        onClick={pauseSpeech}
+        className="flex items-center gap-2 bg-yellow-400 text-slate-900 px-5 py-3 rounded-2xl font-semibold shadow-lg"
+      >
+        <Pause size={18} />
+        Pause
+      </button>
+    )}
+
+    {isSpeaking && isPaused && (
+      <button
+        onClick={resumeSpeech}
+        className="flex items-center gap-2 bg-emerald-400 text-slate-900 px-5 py-3 rounded-2xl font-semibold shadow-lg"
+      >
+        <Play size={18} />
+        Resume
+      </button>
+    )}
+
+    {isSpeaking && (
+      <button
+        onClick={stopSpeech}
+        className="flex items-center gap-2 bg-red-500 text-white px-5 py-3 rounded-2xl font-semibold shadow-lg"
+      >
+        <Square size={18} />
+        Stop
+      </button>
+    )}
+
+    {isSpeaking && (
+      <div className="flex items-center gap-2 text-indigo-600 animate-pulse font-semibold">
+        <Volume2 size={20} />
+        AI Narrator Speaking...
+      </div>
+    )}
+  </div>
 </div>
-          </div>
-
           <AnimatePresence mode="wait">
             {loading ? (
               <div className="space-y-3">
@@ -264,7 +271,7 @@ const stopSpeech = () => {
                 animate={{ opacity: 1 }}
                 className="prose prose-indigo max-w-none"
               >
-                <p className="text-slate-700 leading-relaxed">
+                <p className="text-slate-700 leading-relaxed text-lg md:text-xl">
                   {currentContent?.breakdown || course.diagram_description}
                 </p>
               </motion.div>
@@ -275,12 +282,12 @@ const stopSpeech = () => {
 
       {/* BENTO GRID */}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* VISUAL TIP */}
 
         <motion.div
           whileHover={{ y: -5 }}
-          className="bg-white p-6 rounded-3xl border border-amber-100 shadow-sm hover:shadow-md transition-all"
+          className="bg-white/80 backdrop-blur-xl p-8 rounded-[2rem] border border-white/30 shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
         >
           <div className="flex items-center gap-3 mb-4">
             <div className="p-2 bg-amber-500 rounded-xl text-white">
@@ -294,7 +301,7 @@ const stopSpeech = () => {
             <img
               src={currentImages.tip}
               alt="Visual Tip"
-              className="w-full h-40 object-cover rounded-2xl mb-4"
+              className="w-full h-64 object-cover rounded-3xl mb-6 shadow-lg"
             />
           )}
 
@@ -318,7 +325,7 @@ const stopSpeech = () => {
         {/* MENTAL MAP */}
 <motion.div
   whileHover={{ y: -5 }}
-  className="bg-white rounded-[2rem] p-6 border border-indigo-100 shadow-lg"
+  className="bg-gradient-to-br from-indigo-50 via-white to-cyan-50 rounded-[2rem] p-8 border border-indigo-100 shadow-xl"
 >
   <div className="flex items-center gap-3 mb-4">
     <div className="p-2 bg-indigo-600 rounded-xl text-white">
@@ -335,7 +342,7 @@ const stopSpeech = () => {
     currentContent.mentalMap.map((item, idx) => (
       <span
         key={idx}
-        className="px-3 py-1 rounded-full bg-white border border-indigo-200 text-xs text-slate-700"
+        className="px-5 py-2 rounded-full bg-white border border-indigo-200 text-sm font-semibold text-slate-700 shadow-sm hover:shadow-md transition-all"
       >
         {item}
       </span>
@@ -363,7 +370,7 @@ const stopSpeech = () => {
 
         <motion.div
           whileHover={{ y: -5 }}
-          className="md:col-span-2 bg-slate-900 p-8 rounded-[2rem] text-white shadow-xl relative overflow-hidden group"
+          className="xl:col-span-2 bg-gradient-to-br from-[#0f172a] via-[#1e1b4b] to-[#4c1d95] p-10 rounded-[2.5rem] text-white shadow-[0_20px_80px_rgba(15,23,42,0.4)] relative overflow-hidden group"
         >
           <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
             <ExternalLink size={120} />
@@ -374,7 +381,7 @@ const stopSpeech = () => {
               <img
                 src={currentImages.real}
                 alt="Real World Example"
-                className="w-full h-64 object-cover rounded-2xl mb-6"
+                className="w-full h-[260px] md:h-[420px] object-contain bg-white rounded-[2rem] mb-8 shadow-2xl p-4"
               />
             )}
 
@@ -394,58 +401,73 @@ const stopSpeech = () => {
                 <div className="h-4 bg-white/10 animate-pulse rounded w-2/3" />
               </div>
             ) : (
-              <div className="text-slate-300 leading-relaxed text-lg italic">
-                <ReactMarkdown>
-                  {
-  currentContent?.real ||
-  safeText(
-    metadata?.real_world_example,
-    "Think how this concept powers modern apps and systems."
-  )
-}
-                </ReactMarkdown>
+              <div className="max-w-none text-white"> 
+  <ReactMarkdown
+  components={{
+    p: ({ children }) => (
+      <p className="text-white text-lg md:text-xl leading-relaxed font-medium italic opacity-100">
+        {children}
+      </p>
+    ),
+  }}
+>
+  {
+    currentContent?.real ||
+    safeText(
+      metadata?.real_world_example,
+      "Think how this concept powers modern apps and systems."
+    )
+  }
+</ReactMarkdown>
               </div>
             )}
           </div>
         </motion.div>
-        {/* RECOMMENDED VIDEO */}
+        {/* PREMIUM VIDEO CARD */}
 
 {currentVideo && (
   <motion.a
-    whileHover={{ y: -4 }}
+    whileHover={{ y: -6, scale: 1.01 }}
     href={currentVideo.url}
     target="_blank"
     rel="noopener noreferrer"
-    className="block bg-white rounded-[2rem] border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all"
+    className="xl:col-span-2 overflow-hidden rounded-[2.5rem] bg-white/90 backdrop-blur-2xl border border-white/30 shadow-[0_20px_60px_rgba(15,23,42,0.15)]"
   >
-    <img
-      src={currentVideo.thumbnail}
-      alt={currentVideo.title}
-      className="w-full h-52 object-cover"
-    />
+    <div className="relative">
+      <img
+        src={currentVideo.thumbnail}
+        alt={currentVideo.title}
+        className="w-full h-[280px] md:h-[420px] object-contain bg-black"
+      />
 
-    <div className="p-5">
-      <div className="flex items-center gap-2 mb-2">
-        <div className="p-2 bg-red-500 rounded-lg text-white">
-          ▶
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+
+      <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-12 h-12 rounded-2xl bg-red-500 flex items-center justify-center text-white shadow-xl text-xl">
+              ▶
+            </div>
+
+            <span className="px-4 py-2 rounded-full bg-white/20 backdrop-blur-xl text-white text-sm font-semibold border border-white/20">
+              Recommended Video
+            </span>
+          </div>
+
+          <h3 className="text-2xl md:text-4xl font-black text-white max-w-3xl leading-tight">
+            {currentVideo.title}
+          </h3>
+
+          <p className="text-slate-200 mt-3 text-lg">
+            Watch interactive explanation on YouTube
+          </p>
         </div>
-
-        <h4 className="font-bold text-slate-900">
-          Recommended Video
-        </h4>
       </div>
-
-      <p className="text-slate-700 font-medium">
-        {currentVideo.title}
-      </p>
-
-      <p className="text-sm text-slate-500 mt-1">
-        Watch on YouTube
-      </p>
     </div>
   </motion.a>
 )}
       </div>
     </div>
+    
   );
 }
