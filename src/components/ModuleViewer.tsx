@@ -6,13 +6,13 @@ import { getHint, generateQuiz } from '../services/geminiService';
 import ReactConfetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
 import { useLocation } from 'react-router-dom';
-import { 
-  ArrowLeft, 
-  Play, 
-  CheckCircle2, 
-  AlertCircle, 
-  Lightbulb, 
-  Volume2, 
+import {
+  ArrowLeft,
+  Play,
+  CheckCircle2,
+  AlertCircle,
+  Lightbulb,
+  Volume2,
   ChevronRight,
   Loader2,
   BookOpen,
@@ -62,7 +62,7 @@ export default function ModuleViewer({ moduleId, onBack }: { moduleId: string, o
 
     // Fetch course progress
     const q = query(
-      collection(db, 'progress'), 
+      collection(db, 'progress'),
       where('userId', '==', auth.currentUser.uid),
       where('moduleId', '==', moduleId)
     );
@@ -127,7 +127,7 @@ export default function ModuleViewer({ moduleId, onBack }: { moduleId: string, o
     if (!quizData || !quizData.quiz[currentQuestion]) return;
 
     const isCorrect = selectedAnswer === quizData.quiz[currentQuestion].correct_answer;
-    
+
     if (isCorrect) {
       setScore(score + 1);
       setHint('');
@@ -197,247 +197,237 @@ export default function ModuleViewer({ moduleId, onBack }: { moduleId: string, o
   return (
     <div className="max-w-5xl mx-auto pb-20 px-4">
       {showConfetti && <ReactConfetti width={width} height={height} recycle={false} numberOfPieces={500} />}
-      
+
       <button onClick={onBack} className="flex items-center gap-2 text-slate-500 hover:text-indigo-600 transition-colors mb-8 font-medium">
         <ArrowLeft size={20} />
         Back to Dashboard
       </button>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Course List */}
         {/* Left Column: Premium Learning Sidebar */}
-<div className="lg:sticky lg:top-24 h-fit">
-  <motion.div
-    initial={{ opacity: 0, x: -20 }}
-    animate={{ opacity: 1, x: 0 }}
-    className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/70 dark:bg-slate-900/70 backdrop-blur-2xl shadow-[0_20px_80px_rgba(79,70,229,0.15)]"
-  >
-    {/* Gradient Glow */}
-    <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-cyan-500/10 pointer-events-none" />
-
-    <div className="relative p-7">
-      {/* Header */}
-      <div className="mb-8">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-4">
-          <Sparkles size={14} className="text-indigo-500" />
-          <span className="text-xs font-semibold text-indigo-600">
-            AI Learning Path
-          </span>
-        </div>
-
-        <h1 className="text-2xl font-black leading-tight text-slate-900 dark:text-white">
-          {moduleTitle}
-        </h1>
-
-        <p className="text-sm text-slate-500 dark:text-slate-400 mt-3 leading-relaxed">
-          Complete every lesson to unlock the intelligent adaptive quiz.
-        </p>
-      </div>
-
-      {/* Progress Overview */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-            Module Progress
-          </span>
-
-          <span className="text-sm font-bold text-indigo-600">
-            {completedCourses.length}/{moduleData.courses.length}
-          </span>
-        </div>
-
-        <div className="h-3 rounded-full bg-slate-200/70 dark:bg-slate-800 overflow-hidden">
+        <div className="lg:sticky lg:top-24 h-fit">
           <motion.div
-            initial={{ width: 0 }}
-            animate={{
-              width: `${
-                (completedCourses.length /
-                  moduleData.courses.length) *
-                100
-              }%`,
-            }}
-            transition={{ duration: 0.8 }}
-            className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-500"
-          />
-        </div>
-      </div>
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/70 dark:bg-slate-900/70 backdrop-blur-2xl shadow-[0_20px_80px_rgba(79,70,229,0.15)]"
+          >
+            {/* Gradient Glow */}
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-cyan-500/10 pointer-events-none" />
 
-      {/* Course Navigation */}
-      <div className="space-y-4">
-        {(moduleData.courses || []).map((course, idx) => {
-          const isCompleted = completedCourses.includes(
-            course.course_id
-          );
-
-          const isSelected =
-            selectedCourse?.course_id === course.course_id;
-
-          return (
-            <motion.button
-              whileHover={{ y: -3, scale: 1.01 }}
-              whileTap={{ scale: 0.98 }}
-              key={course.course_id}
-              onClick={() => {
-                setSelectedCourse(course);
-                setShowQuiz(false);
-              }}
-              className={`group relative w-full overflow-hidden rounded-2xl border transition-all duration-300 text-left ${
-                isSelected
-                  ? "border-indigo-500/40 bg-gradient-to-r from-indigo-500/15 to-violet-500/10 shadow-lg shadow-indigo-500/20"
-                  : isCompleted
-                  ? "border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10"
-                  : "border-slate-200/60 dark:border-slate-800 bg-white/70 dark:bg-slate-900/60 hover:border-indigo-300 dark:hover:border-indigo-700"
-              }`}
-            >
-              {/* Active Glow */}
-              {isSelected && (
-                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-violet-500/5 pointer-events-none" />
-              )}
-
-              <div className="relative p-4 flex items-center gap-4">
-                {/* Icon */}
-                <div
-                  className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 transition-all ${
-                    isCompleted
-                      ? "bg-emerald-500 text-white"
-                      : isSelected
-                      ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/30"
-                      : "bg-slate-100 dark:bg-slate-800 text-slate-500"
-                  }`}
-                >
-                  {isCompleted ? (
-                    <CheckCircle2 size={20} />
-                  ) : (
-                    <span className="font-bold text-sm">
-                      {idx + 1}
-                    </span>
-                  )}
+            <div className="relative p-7">
+              {/* Header */}
+              <div className="mb-8">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-4">
+                  <Sparkles size={14} className="text-indigo-500" />
+                  <span className="text-xs font-semibold text-indigo-600">
+                    AI Learning Path
+                  </span>
                 </div>
 
-                {/* Text */}
-                <div className="flex-1 min-w-0">
-                  <h3
-                    className={`font-bold text-sm leading-snug ${
-                      isSelected
-                        ? "text-indigo-700 dark:text-indigo-300"
-                        : "text-slate-800 dark:text-slate-100"
-                    }`}
-                  >
-                    {course.course_title}
-                  </h3>
+                <h1 className="text-2xl font-black leading-tight text-slate-900 dark:text-white">
+                  {moduleTitle}
+                </h1>
 
-                  <div className="flex items-center gap-2 mt-2">
-                    <div
-                      className={`h-1.5 rounded-full flex-1 overflow-hidden ${
-                        isCompleted
-                          ? "bg-emerald-100"
-                          : "bg-slate-200 dark:bg-slate-700"
-                      }`}
-                    >
-                      <div
-                        className={`h-full rounded-full ${
-                          isCompleted
-                            ? "w-full bg-emerald-500"
-                            : isSelected
-                            ? "w-3/4 bg-indigo-500"
-                            : "w-1/4 bg-slate-400"
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-3 leading-relaxed">
+                  Complete every lesson to unlock the intelligent adaptive quiz.
+                </p>
+              </div>
+
+              {/* Progress Overview */}
+              <div className="mb-8">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                    Module Progress
+                  </span>
+
+                  <span className="text-sm font-bold text-indigo-600">
+                    {completedCourses.length}/{moduleData.courses.length}
+                  </span>
+                </div>
+
+                <div className="h-3 rounded-full bg-slate-200/70 dark:bg-slate-800 overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{
+                      width: `${(completedCourses.length /
+                          moduleData.courses.length) *
+                        100
+                        }%`,
+                    }}
+                    transition={{ duration: 0.8 }}
+                    className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-500"
+                  />
+                </div>
+              </div>
+
+              {/* Course Navigation */}
+              <div className="space-y-4">
+                {(moduleData.courses || []).map((course, idx) => {
+                  const isCompleted = completedCourses.includes(
+                    course.course_id
+                  );
+
+                  const isSelected =
+                    selectedCourse?.course_id === course.course_id;
+
+                  return (
+                    <motion.button
+                      whileHover={{ y: -3, scale: 1.01 }}
+                      whileTap={{ scale: 0.98 }}
+                      key={course.course_id}
+                      onClick={() => {
+                        setSelectedCourse(course);
+                        setShowQuiz(false);
+                      }}
+                      className={`group relative w-full overflow-hidden rounded-2xl border transition-all duration-300 text-left ${isSelected
+                          ? "border-indigo-500/40 bg-gradient-to-r from-indigo-500/15 to-violet-500/10 shadow-lg shadow-indigo-500/20"
+                          : isCompleted
+                            ? "border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10"
+                            : "border-slate-200/60 dark:border-slate-800 bg-white/70 dark:bg-slate-900/60 hover:border-indigo-300 dark:hover:border-indigo-700"
                         }`}
-                      />
+                    >
+                      {/* Active Glow */}
+                      {isSelected && (
+                        <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-violet-500/5 pointer-events-none" />
+                      )}
+
+                      <div className="relative p-4 flex items-center gap-4">
+                        {/* Icon */}
+                        <div
+                          className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 transition-all ${isCompleted
+                              ? "bg-emerald-500 text-white"
+                              : isSelected
+                                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/30"
+                                : "bg-slate-100 dark:bg-slate-800 text-slate-500"
+                            }`}
+                        >
+                          {isCompleted ? (
+                            <CheckCircle2 size={20} />
+                          ) : (
+                            <span className="font-bold text-sm">
+                              {idx + 1}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Text */}
+                        <div className="flex-1 min-w-0">
+                          <h3
+                            className={`font-bold text-sm leading-snug ${isSelected
+                                ? "text-indigo-700 dark:text-indigo-300"
+                                : "text-slate-800 dark:text-slate-100"
+                              }`}
+                          >
+                            {course.course_title}
+                          </h3>
+
+                          <div className="flex items-center gap-2 mt-2">
+                            <div
+                              className={`h-1.5 rounded-full flex-1 overflow-hidden ${isCompleted
+                                  ? "bg-emerald-100"
+                                  : "bg-slate-200 dark:bg-slate-700"
+                                }`}
+                            >
+                              <div
+                                className={`h-full rounded-full ${isCompleted
+                                    ? "w-full bg-emerald-500"
+                                    : isSelected
+                                      ? "w-3/4 bg-indigo-500"
+                                      : "w-1/4 bg-slate-400"
+                                  }`}
+                              />
+                            </div>
+
+                            <span className="text-[10px] font-semibold text-slate-400">
+                              {isCompleted ? "100%" : isSelected ? "75%" : "25%"}
+                            </span>
+                          </div>
+                        </div>
+
+                        <ChevronRight
+                          size={18}
+                          className={`transition-transform duration-300 ${isSelected
+                              ? "text-indigo-500 translate-x-1"
+                              : "text-slate-300 group-hover:translate-x-1"
+                            }`}
+                        />
+                      </div>
+                    </motion.button>
+                  );
+                })}
+
+                {/* Premium Final Quiz Card */}
+                <motion.button
+                  whileHover={
+                    allCoursesCompleted && !quizFinished
+                      ? { y: -3, scale: 1.01 }
+                      : {}
+                  }
+                  whileTap={{ scale: 0.98 }}
+                  disabled={!allCoursesCompleted || quizFinished}
+                  onClick={() => {
+                    setSelectedCourse(null);
+                    handleStartQuiz();
+                  }}
+                  className={`relative w-full overflow-hidden rounded-2xl border transition-all duration-300 text-left ${showQuiz
+                      ? "border-indigo-500 bg-indigo-500/10"
+                      : quizFinished
+                        ? "border-emerald-500/30 bg-emerald-500/10"
+                        : !allCoursesCompleted
+                          ? "border-slate-200 dark:border-slate-800 bg-slate-100/50 dark:bg-slate-900/40 opacity-70 cursor-not-allowed"
+                          : "border-indigo-500/30 bg-gradient-to-r from-indigo-500/10 to-violet-500/10 hover:shadow-xl hover:shadow-indigo-500/20"
+                    }`}
+                >
+                  <div className="p-5 flex items-center gap-4">
+                    <div
+                      className={`w-12 h-12 rounded-2xl flex items-center justify-center ${quizFinished
+                          ? "bg-emerald-500 text-white"
+                          : !allCoursesCompleted
+                            ? "bg-slate-200 dark:bg-slate-800 text-slate-400"
+                            : "bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-lg shadow-indigo-500/30"
+                        }`}
+                    >
+                      {quizFinished ? (
+                        <CheckCircle2 size={22} />
+                      ) : (
+                        <Sparkles size={22} />
+                      )}
                     </div>
 
-                    <span className="text-[10px] font-semibold text-slate-400">
-                      {isCompleted ? "100%" : isSelected ? "75%" : "25%"}
-                    </span>
+                    <div className="flex-1">
+                      <h3
+                        className={`font-black text-sm ${quizFinished
+                            ? "text-emerald-700 dark:text-emerald-300"
+                            : !allCoursesCompleted
+                              ? "text-slate-400"
+                              : "text-indigo-700 dark:text-indigo-300"
+                          }`}
+                      >
+                        Final Module Quiz
+                      </h3>
+
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                        {quizFinished
+                          ? "Quiz completed successfully"
+                          : !allCoursesCompleted
+                            ? "Complete all lessons to unlock"
+                            : "AI adaptive assessment ready"}
+                      </p>
+                    </div>
+
+                    {allCoursesCompleted && !quizFinished && (
+                      <ChevronRight
+                        size={18}
+                        className="text-indigo-500"
+                      />
+                    )}
                   </div>
-                </div>
-
-                <ChevronRight
-                  size={18}
-                  className={`transition-transform duration-300 ${
-                    isSelected
-                      ? "text-indigo-500 translate-x-1"
-                      : "text-slate-300 group-hover:translate-x-1"
-                  }`}
-                />
+                </motion.button>
               </div>
-            </motion.button>
-          );
-        })}
-
-        {/* Premium Final Quiz Card */}
-        <motion.button
-          whileHover={
-            allCoursesCompleted && !quizFinished
-              ? { y: -3, scale: 1.01 }
-              : {}
-          }
-          whileTap={{ scale: 0.98 }}
-          disabled={!allCoursesCompleted || quizFinished}
-          onClick={() => {
-            setSelectedCourse(null);
-            handleStartQuiz();
-          }}
-          className={`relative w-full overflow-hidden rounded-2xl border transition-all duration-300 text-left ${
-            showQuiz
-              ? "border-indigo-500 bg-indigo-500/10"
-              : quizFinished
-              ? "border-emerald-500/30 bg-emerald-500/10"
-              : !allCoursesCompleted
-              ? "border-slate-200 dark:border-slate-800 bg-slate-100/50 dark:bg-slate-900/40 opacity-70 cursor-not-allowed"
-              : "border-indigo-500/30 bg-gradient-to-r from-indigo-500/10 to-violet-500/10 hover:shadow-xl hover:shadow-indigo-500/20"
-          }`}
-        >
-          <div className="p-5 flex items-center gap-4">
-            <div
-              className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
-                quizFinished
-                  ? "bg-emerald-500 text-white"
-                  : !allCoursesCompleted
-                  ? "bg-slate-200 dark:bg-slate-800 text-slate-400"
-                  : "bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-lg shadow-indigo-500/30"
-              }`}
-            >
-              {quizFinished ? (
-                <CheckCircle2 size={22} />
-              ) : (
-                <Sparkles size={22} />
-              )}
             </div>
-
-            <div className="flex-1">
-              <h3
-                className={`font-black text-sm ${
-                  quizFinished
-                    ? "text-emerald-700 dark:text-emerald-300"
-                    : !allCoursesCompleted
-                    ? "text-slate-400"
-                    : "text-indigo-700 dark:text-indigo-300"
-                }`}
-              >
-                Final Module Quiz
-              </h3>
-
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                {quizFinished
-                  ? "Quiz completed successfully"
-                  : !allCoursesCompleted
-                  ? "Complete all lessons to unlock"
-                  : "AI adaptive assessment ready"}
-              </p>
-            </div>
-
-            {allCoursesCompleted && !quizFinished && (
-              <ChevronRight
-                size={18}
-                className="text-indigo-500"
-              />
-            )}
-          </div>
-        </motion.button>
-      </div>
-    </div>
-  </motion.div>
-</div>
+          </motion.div>
+        </div>
         {/* Right Column: Content Viewer */}
         <div className="lg:col-span-2">
           <AnimatePresence mode="wait">
@@ -456,7 +446,7 @@ export default function ModuleViewer({ moduleId, onBack }: { moduleId: string, o
                     </div>
                     <h2 className="text-4xl font-bold mb-4">Awesome Job!</h2>
                     <p className="text-slate-400 mb-8 text-xl">You scored <span className="text-indigo-400 font-bold">{score}/{quizData?.quiz.length}</span></p>
-                    <button 
+                    <button
                       onClick={onBack}
                       className="bg-indigo-600 text-white px-12 py-4 rounded-2xl font-bold hover:bg-indigo-700 transition-all"
                     >
@@ -477,18 +467,17 @@ export default function ModuleViewer({ moduleId, onBack }: { moduleId: string, o
 
                     <div className="space-y-6">
                       <p className="text-3xl font-bold leading-relaxed text-white tracking-tight">
-  {quizData.quiz[currentQuestion].question}
-</p>
+                        {quizData.quiz[currentQuestion].question}
+                      </p>
                       <div className="grid gap-4">
                         {quizData.quiz[currentQuestion].options.map((option, idx) => (
                           <button
                             key={idx}
                             onClick={() => setSelectedAnswer(option)}
-                            className={`p-5 rounded-2xl border-2 text-left transition-all duration-300 text-lg font-semibold ${
-  selectedAnswer === option
-    ? 'border-indigo-400 bg-indigo-500/20 text-white shadow-lg shadow-indigo-500/20 scale-[1.02]'
-    : 'border-slate-700 bg-slate-800/80 text-slate-100 hover:border-indigo-500 hover:bg-slate-800'
-}`}
+                            className={`p-5 rounded-2xl border-2 text-left transition-all duration-300 text-lg font-semibold ${selectedAnswer === option
+                                ? 'border-indigo-400 bg-indigo-500/20 text-white shadow-lg shadow-indigo-500/20 scale-[1.02]'
+                                : 'border-slate-700 bg-slate-800/80 text-slate-100 hover:border-indigo-500 hover:bg-slate-800'
+                              }`}
                           >
                             {option}
                           </button>
@@ -497,7 +486,7 @@ export default function ModuleViewer({ moduleId, onBack }: { moduleId: string, o
                     </div>
 
                     {hint && (
-                      <motion.div 
+                      <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="bg-amber-500/10 border border-amber-500/20 p-6 rounded-2xl flex gap-4"
@@ -537,7 +526,7 @@ export default function ModuleViewer({ moduleId, onBack }: { moduleId: string, o
                         <span className="flex items-center gap-1"><Trophy size={14} /> 5 Points</span>
                       </div>
                     </div>
-                    <button 
+                    <button
                       onClick={() => {
                         const utterance = new SpeechSynthesisUtterance(selectedCourse.ai_explanation);
                         window.speechSynthesis.speak(utterance);
@@ -555,12 +544,12 @@ export default function ModuleViewer({ moduleId, onBack }: { moduleId: string, o
                 <div className="p-10 space-y-12">
                   {/* Enhanced Visual Learning Section */}
                   <section>
-                    <VisualLearningSection 
-                      course={selectedCourse} 
+                    <VisualLearningSection
+                      course={selectedCourse}
                       domain={moduleData.module_title} // Using module title as domain context
                       learningStyle={profile?.learningStyle || 'visual'}
                     />
-                    
+
                     <div className="mt-6 bg-white p-4 rounded-2xl border border-slate-100 flex items-center gap-4 shadow-sm">
                       <div className="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center text-red-600">
                         <Youtube size={24} />

@@ -61,7 +61,7 @@ export const visualContent: Record<
     ],
   },
 
-    "The CSS Box Model": {
+  "The CSS Box Model": {
     breakdown:
       "A 3D perspective diagram of a box showing four concentric layers: Content (blue), Padding (green), Border (yellow), and Margin (orange).",
 
@@ -117,7 +117,7 @@ export const visualContent: Record<
     ],
   },
 
-    "Visualizing Memory and Linear Arrays": {
+  "Visualizing Memory and Linear Arrays": {
     breakdown:
       "A horizontal grid of 10 boxes representing memory addresses 100-109, with color-coded blocks indicating stored integers and an arrow pointing to index 3.",
 

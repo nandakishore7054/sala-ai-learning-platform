@@ -34,18 +34,16 @@ export default function AccessibilityPanel() {
   }) => (
     <button
       onClick={onClick}
-      className={`relative w-14 h-7 rounded-full transition-all duration-300 ${
-        enabled
+      className={`relative w-14 h-7 rounded-full transition-all duration-300 ${enabled
           ? 'bg-gradient-to-r from-indigo-500 to-violet-600 shadow-lg shadow-indigo-500/30'
           : 'bg-slate-300 dark:bg-slate-700'
-      }`}
+        }`}
     >
       <motion.div
         layout
         transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-        className={`absolute top-1 w-5 h-5 rounded-full bg-white shadow-md ${
-          enabled ? 'left-8' : 'left-1'
-        }`}
+        className={`absolute top-1 w-5 h-5 rounded-full bg-white shadow-md ${enabled ? 'left-8' : 'left-1'
+          }`}
       />
     </button>
   );
@@ -86,7 +84,7 @@ export default function AccessibilityPanel() {
             className="fixed bottom-28 right-6 z-[9999] w-[360px] max-w-[90vw]"
           >
             <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/80 dark:bg-[#0F172A]/90 backdrop-blur-2xl shadow-[0_20px_80px_rgba(0,0,0,0.35)]">
-              
+
               {/* Header */}
               <div className="relative overflow-hidden px-6 py-5 bg-gradient-to-r from-indigo-600 via-violet-600 to-blue-600">
                 <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,white,transparent_40%)]" />
@@ -119,17 +117,16 @@ export default function AccessibilityPanel() {
 
               {/* Content */}
               <div className="p-5 space-y-4 max-h-[70vh] overflow-y-auto">
-                
+
                 {/* Text To Speech */}
                 <div className="group rounded-3xl border border-slate-200/60 dark:border-white/10 bg-white/60 dark:bg-white/5 p-4 hover:shadow-xl transition-all">
                   <div className="flex items-center justify-between">
                     <div className="flex gap-4">
                       <div
-                        className={`p-3 rounded-2xl ${
-                          settings.textToSpeech
+                        className={`p-3 rounded-2xl ${settings.textToSpeech
                             ? 'bg-indigo-500 text-white'
                             : 'bg-slate-100 dark:bg-slate-800 text-slate-500'
-                        }`}
+                          }`}
                       >
                         {settings.textToSpeech ? (
                           <Volume2 size={20} />
@@ -165,11 +162,10 @@ export default function AccessibilityPanel() {
                   <div className="flex items-center justify-between">
                     <div className="flex gap-4">
                       <div
-                        className={`p-3 rounded-2xl ${
-                          settings.highContrast
+                        className={`p-3 rounded-2xl ${settings.highContrast
                             ? 'bg-violet-500 text-white'
                             : 'bg-slate-100 dark:bg-slate-800 text-slate-500'
-                        }`}
+                          }`}
                       >
                         <Contrast size={20} />
                       </div>
@@ -201,11 +197,10 @@ export default function AccessibilityPanel() {
                   <div className="flex items-center justify-between">
                     <div className="flex gap-4">
                       <div
-                        className={`p-3 rounded-2xl ${
-                          settings.simpleNavigation
+                        className={`p-3 rounded-2xl ${settings.simpleNavigation
                             ? 'bg-cyan-500 text-white'
                             : 'bg-slate-100 dark:bg-slate-800 text-slate-500'
-                        }`}
+                          }`}
                       >
                         <LayoutDashboard size={20} />
                       </div>
@@ -259,11 +254,10 @@ export default function AccessibilityPanel() {
                             fontSize: size.value
                           })
                         }
-                        className={`relative py-3 rounded-2xl font-semibold text-sm transition-all ${
-                          settings.fontSize === size.value
+                        className={`relative py-3 rounded-2xl font-semibold text-sm transition-all ${settings.fontSize === size.value
                             ? 'bg-gradient-to-r from-indigo-500 to-violet-600 text-white shadow-lg shadow-indigo-500/30'
                             : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:scale-[1.03]'
-                        }`}
+                          }`}
                       >
                         {settings.fontSize === size.value && (
                           <Check className="absolute top-2 right-2 w-4 h-4" />

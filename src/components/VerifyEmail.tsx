@@ -70,7 +70,7 @@ export default function VerifyEmail() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 text-center"
@@ -78,10 +78,10 @@ export default function VerifyEmail() {
         <div className="inline-flex items-center justify-center w-20 h-20 bg-indigo-100 text-indigo-600 rounded-full mb-6">
           <Mail size={40} />
         </div>
-        
+
         <h1 className="text-3xl font-bold text-slate-900 mb-2">Verify Your Email</h1>
         <p className="text-slate-600 mb-8 leading-relaxed">
-          We've sent a verification link to <span className="font-semibold text-slate-900">{user.email}</span>. 
+          We've sent a verification link to <span className="font-semibold text-slate-900">{user.email}</span>.
           Please verify your account before continuing.
         </p>
 

@@ -39,7 +39,7 @@ export const courseImages: Record<
       "/images/web-development/forms-user-input-real.png",
   },
 
-    "The CSS Box Model": {
+  "The CSS Box Model": {
     visual:
       "/images/web-development/css-box-model-visual.png",
 
@@ -72,7 +72,7 @@ export const courseImages: Record<
       "/images/web-development/colors-typography-real.png",
   },
 
-    "Visualizing Memory and Linear Arrays": {
+  "Visualizing Memory and Linear Arrays": {
     visual:
       "/images/data-structures/memory-linear-arrays-visual.png",
 

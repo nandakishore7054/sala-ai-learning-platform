@@ -88,45 +88,45 @@ Real world example:
 ${currentContent?.real || ""}
 `;
 
-const startSpeech = () => {
-  window.speechSynthesis.cancel();
+  const startSpeech = () => {
+    window.speechSynthesis.cancel();
 
-  const utterance = new SpeechSynthesisUtterance(
-    lessonNarration
-  );
+    const utterance = new SpeechSynthesisUtterance(
+      lessonNarration
+    );
 
-  utterance.rate = 0.9;
-  utterance.pitch = 1;
-  utterance.volume = 1;
+    utterance.rate = 0.9;
+    utterance.pitch = 1;
+    utterance.volume = 1;
 
-  utterance.onstart = () => {
-    setIsSpeaking(true);
+    utterance.onstart = () => {
+      setIsSpeaking(true);
+      setIsPaused(false);
+    };
+
+    utterance.onend = () => {
+      setIsSpeaking(false);
+      setIsPaused(false);
+    };
+
+    speechSynthesis.speak(utterance);
+  };
+
+  const pauseSpeech = () => {
+    speechSynthesis.pause();
+    setIsPaused(true);
+  };
+
+  const resumeSpeech = () => {
+    speechSynthesis.resume();
     setIsPaused(false);
   };
 
-  utterance.onend = () => {
+  const stopSpeech = () => {
+    speechSynthesis.cancel();
     setIsSpeaking(false);
     setIsPaused(false);
   };
-
-  speechSynthesis.speak(utterance);
-};
-
-const pauseSpeech = () => {
-  speechSynthesis.pause();
-  setIsPaused(true);
-};
-
-const resumeSpeech = () => {
-  speechSynthesis.resume();
-  setIsPaused(false);
-};
-
-const stopSpeech = () => {
-  speechSynthesis.cancel();
-  setIsSpeaking(false);
-  setIsPaused(false);
-};
   const imageUrl =
     currentImages?.visual ||
     "https://images.unsplash.com/photo-1498050108023-c5249f4df085";
@@ -172,9 +172,8 @@ const stopSpeech = () => {
           <img
             src={imageError ? fallbackUrl : imageUrl}
             alt={course.course_title}
-            className={`w-full h-full object-contain bg-white transition-all duration-700 group-hover:scale-105 p-6 ${
-  imageLoaded ? "opacity-100" : "opacity-0"
-}`}
+            className={`w-full h-full object-contain bg-white transition-all duration-700 group-hover:scale-105 p-6 ${imageLoaded ? "opacity-100" : "opacity-0"
+              }`}
             onLoad={() => setImageLoaded(true)}
             onError={() => setImageError(true)}
           />
@@ -190,75 +189,75 @@ const stopSpeech = () => {
         {/* VISUAL BREAKDOWN */}
 
         <div className="p-8 md:p-12 bg-gradient-to-br from-indigo-50 via-white to-violet-50">
-         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-8">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-8">
 
-  <div className="flex items-center gap-4">
-    <div className="p-3 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-2xl text-white shadow-lg">
-      <Eye size={24} />
-    </div>
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-2xl text-white shadow-lg">
+                <Eye size={24} />
+              </div>
 
-    <div>
-      <h3 className="text-2xl md:text-3xl font-black text-slate-900">
-        Visual Pattern & Breakdown
-      </h3>
+              <div>
+                <h3 className="text-2xl md:text-3xl font-black text-slate-900">
+                  Visual Pattern & Breakdown
+                </h3>
 
-      <p className="text-slate-500 mt-1">
-        AI-generated visual explanation for better understanding
-      </p>
-    </div>
-  </div>
+                <p className="text-slate-500 mt-1">
+                  AI-generated visual explanation for better understanding
+                </p>
+              </div>
+            </div>
 
-  {/* SPEECH CONTROLS */}
-  <div className="flex items-center gap-3 flex-wrap">
+            {/* SPEECH CONTROLS */}
+            <div className="flex items-center gap-3 flex-wrap">
 
-    {!isSpeaking && (
-      <button
-        onClick={startSpeech}
-        className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-violet-600 text-white px-5 py-3 rounded-2xl font-semibold hover:scale-105 transition-all shadow-lg"
-      >
-        <Play size={18} />
-        Listen to Lesson
-      </button>
-    )}
+              {!isSpeaking && (
+                <button
+                  onClick={startSpeech}
+                  className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-violet-600 text-white px-5 py-3 rounded-2xl font-semibold hover:scale-105 transition-all shadow-lg"
+                >
+                  <Play size={18} />
+                  Listen to Lesson
+                </button>
+              )}
 
-    {isSpeaking && !isPaused && (
-      <button
-        onClick={pauseSpeech}
-        className="flex items-center gap-2 bg-yellow-400 text-slate-900 px-5 py-3 rounded-2xl font-semibold shadow-lg"
-      >
-        <Pause size={18} />
-        Pause
-      </button>
-    )}
+              {isSpeaking && !isPaused && (
+                <button
+                  onClick={pauseSpeech}
+                  className="flex items-center gap-2 bg-yellow-400 text-slate-900 px-5 py-3 rounded-2xl font-semibold shadow-lg"
+                >
+                  <Pause size={18} />
+                  Pause
+                </button>
+              )}
 
-    {isSpeaking && isPaused && (
-      <button
-        onClick={resumeSpeech}
-        className="flex items-center gap-2 bg-emerald-400 text-slate-900 px-5 py-3 rounded-2xl font-semibold shadow-lg"
-      >
-        <Play size={18} />
-        Resume
-      </button>
-    )}
+              {isSpeaking && isPaused && (
+                <button
+                  onClick={resumeSpeech}
+                  className="flex items-center gap-2 bg-emerald-400 text-slate-900 px-5 py-3 rounded-2xl font-semibold shadow-lg"
+                >
+                  <Play size={18} />
+                  Resume
+                </button>
+              )}
 
-    {isSpeaking && (
-      <button
-        onClick={stopSpeech}
-        className="flex items-center gap-2 bg-red-500 text-white px-5 py-3 rounded-2xl font-semibold shadow-lg"
-      >
-        <Square size={18} />
-        Stop
-      </button>
-    )}
+              {isSpeaking && (
+                <button
+                  onClick={stopSpeech}
+                  className="flex items-center gap-2 bg-red-500 text-white px-5 py-3 rounded-2xl font-semibold shadow-lg"
+                >
+                  <Square size={18} />
+                  Stop
+                </button>
+              )}
 
-    {isSpeaking && (
-      <div className="flex items-center gap-2 text-indigo-600 animate-pulse font-semibold">
-        <Volume2 size={20} />
-        AI Narrator Speaking...
-      </div>
-    )}
-  </div>
-</div>
+              {isSpeaking && (
+                <div className="flex items-center gap-2 text-indigo-600 animate-pulse font-semibold">
+                  <Volume2 size={20} />
+                  AI Narrator Speaking...
+                </div>
+              )}
+            </div>
+          </div>
           <AnimatePresence mode="wait">
             {loading ? (
               <div className="space-y-3">
@@ -311,61 +310,61 @@ const stopSpeech = () => {
             <p className="text-slate-600 text-sm leading-relaxed italic">
               "
               {
-  currentContent?.tip ||
-  safeText(
-    metadata?.visual_tip,
-    "Look for patterns in the structure to better understand the concept."
-  )
-}
+                currentContent?.tip ||
+                safeText(
+                  metadata?.visual_tip,
+                  "Look for patterns in the structure to better understand the concept."
+                )
+              }
               "
             </p>
           )}
         </motion.div>
 
         {/* MENTAL MAP */}
-<motion.div
-  whileHover={{ y: -5 }}
-  className="bg-gradient-to-br from-indigo-50 via-white to-cyan-50 rounded-[2rem] p-8 border border-indigo-100 shadow-xl"
->
-  <div className="flex items-center gap-3 mb-4">
-    <div className="p-2 bg-indigo-600 rounded-xl text-white">
-      <BrainCircuit size={20} />
-    </div>
-
-    <h3 className="text-xl font-bold">
-      Mental Map
-    </h3>
-  </div>
-
-  <div className="flex flex-wrap gap-2">
-  {currentContent?.mentalMap ? (
-    currentContent.mentalMap.map((item, idx) => (
-      <span
-        key={idx}
-        className="px-5 py-2 rounded-full bg-white border border-indigo-200 text-sm font-semibold text-slate-700 shadow-sm hover:shadow-md transition-all"
-      >
-        {item}
-      </span>
-    ))
-  ) : metadata?.concept_map_summary &&
-    typeof metadata.concept_map_summary === "object" ? (
-    Object.entries(metadata.concept_map_summary).map(
-      ([key, value]: any) => (
-        <span
-          key={key}
-          className="px-3 py-1 rounded-full bg-white border border-indigo-200 text-xs text-slate-700"
+        <motion.div
+          whileHover={{ y: -5 }}
+          className="bg-gradient-to-br from-indigo-50 via-white to-cyan-50 rounded-[2rem] p-8 border border-indigo-100 shadow-xl"
         >
-          {key}
-        </span>
-      )
-    )
-  ) : (
-    <span className="text-slate-500 text-sm">
-      Connect concepts visually.
-    </span>
-  )}
-</div>
-</motion.div>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 bg-indigo-600 rounded-xl text-white">
+              <BrainCircuit size={20} />
+            </div>
+
+            <h3 className="text-xl font-bold">
+              Mental Map
+            </h3>
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            {currentContent?.mentalMap ? (
+              currentContent.mentalMap.map((item, idx) => (
+                <span
+                  key={idx}
+                  className="px-5 py-2 rounded-full bg-white border border-indigo-200 text-sm font-semibold text-slate-700 shadow-sm hover:shadow-md transition-all"
+                >
+                  {item}
+                </span>
+              ))
+            ) : metadata?.concept_map_summary &&
+              typeof metadata.concept_map_summary === "object" ? (
+              Object.entries(metadata.concept_map_summary).map(
+                ([key, value]: any) => (
+                  <span
+                    key={key}
+                    className="px-3 py-1 rounded-full bg-white border border-indigo-200 text-xs text-slate-700"
+                  >
+                    {key}
+                  </span>
+                )
+              )
+            ) : (
+              <span className="text-slate-500 text-sm">
+                Connect concepts visually.
+              </span>
+            )}
+          </div>
+        </motion.div>
         {/* REAL WORLD EXAMPLE */}
 
         <motion.div
@@ -401,73 +400,73 @@ const stopSpeech = () => {
                 <div className="h-4 bg-white/10 animate-pulse rounded w-2/3" />
               </div>
             ) : (
-              <div className="max-w-none text-white"> 
-  <ReactMarkdown
-  components={{
-    p: ({ children }) => (
-      <p className="text-white text-lg md:text-xl leading-relaxed font-medium italic opacity-100">
-        {children}
-      </p>
-    ),
-  }}
->
-  {
-    currentContent?.real ||
-    safeText(
-      metadata?.real_world_example,
-      "Think how this concept powers modern apps and systems."
-    )
-  }
-</ReactMarkdown>
+              <div className="max-w-none text-white">
+                <ReactMarkdown
+                  components={{
+                    p: ({ children }) => (
+                      <p className="text-white text-lg md:text-xl leading-relaxed font-medium italic opacity-100">
+                        {children}
+                      </p>
+                    ),
+                  }}
+                >
+                  {
+                    currentContent?.real ||
+                    safeText(
+                      metadata?.real_world_example,
+                      "Think how this concept powers modern apps and systems."
+                    )
+                  }
+                </ReactMarkdown>
               </div>
             )}
           </div>
         </motion.div>
         {/* PREMIUM VIDEO CARD */}
 
-{currentVideo && (
-  <motion.a
-    whileHover={{ y: -6, scale: 1.01 }}
-    href={currentVideo.url}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="xl:col-span-2 overflow-hidden rounded-[2.5rem] bg-white/90 backdrop-blur-2xl border border-white/30 shadow-[0_20px_60px_rgba(15,23,42,0.15)]"
-  >
-    <div className="relative">
-      <img
-        src={currentVideo.thumbnail}
-        alt={currentVideo.title}
-        className="w-full h-[280px] md:h-[420px] object-contain bg-black"
-      />
+        {currentVideo && (
+          <motion.a
+            whileHover={{ y: -6, scale: 1.01 }}
+            href={currentVideo.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="xl:col-span-2 overflow-hidden rounded-[2.5rem] bg-white/90 backdrop-blur-2xl border border-white/30 shadow-[0_20px_60px_rgba(15,23,42,0.15)]"
+          >
+            <div className="relative">
+              <img
+                src={currentVideo.thumbnail}
+                alt={currentVideo.title}
+                className="w-full h-[280px] md:h-[420px] object-contain bg-black"
+              />
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
 
-      <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
-        <div>
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-12 h-12 rounded-2xl bg-red-500 flex items-center justify-center text-white shadow-xl text-xl">
-              ▶
+              <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-12 h-12 rounded-2xl bg-red-500 flex items-center justify-center text-white shadow-xl text-xl">
+                      ▶
+                    </div>
+
+                    <span className="px-4 py-2 rounded-full bg-white/20 backdrop-blur-xl text-white text-sm font-semibold border border-white/20">
+                      Recommended Video
+                    </span>
+                  </div>
+
+                  <h3 className="text-2xl md:text-4xl font-black text-white max-w-3xl leading-tight">
+                    {currentVideo.title}
+                  </h3>
+
+                  <p className="text-slate-200 mt-3 text-lg">
+                    Watch interactive explanation on YouTube
+                  </p>
+                </div>
+              </div>
             </div>
-
-            <span className="px-4 py-2 rounded-full bg-white/20 backdrop-blur-xl text-white text-sm font-semibold border border-white/20">
-              Recommended Video
-            </span>
-          </div>
-
-          <h3 className="text-2xl md:text-4xl font-black text-white max-w-3xl leading-tight">
-            {currentVideo.title}
-          </h3>
-
-          <p className="text-slate-200 mt-3 text-lg">
-            Watch interactive explanation on YouTube
-          </p>
-        </div>
+          </motion.a>
+        )}
       </div>
     </div>
-  </motion.a>
-)}
-      </div>
-    </div>
-    
+
   );
 }

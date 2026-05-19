@@ -265,9 +265,8 @@ export default function LandingPage() {
               <motion.div
                 key={idx}
                 whileHover={{ y: -8 }}
-                className={`rounded-[2.5rem] border border-white/30 bg-white/70 backdrop-blur-2xl shadow-xl p-8 hover:shadow-indigo-100 transition-all ${
-                  feature.large ? "lg:col-span-2" : ""
-                }`}
+                className={`rounded-[2.5rem] border border-white/30 bg-white/70 backdrop-blur-2xl shadow-xl p-8 hover:shadow-indigo-100 transition-all ${feature.large ? "lg:col-span-2" : ""
+                  }`}
               >
                 <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mb-6">
                   {feature.icon}

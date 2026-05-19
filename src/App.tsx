@@ -21,7 +21,7 @@ export default function App() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
-  
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -31,7 +31,7 @@ export default function App() {
       if (firebaseUser) {
         const docRef = doc(db, 'users', firebaseUser.uid);
         const docSnap = await getDoc(docRef);
-        
+
         if (docSnap.exists()) {
           setProfile(docSnap.data() as UserProfile);
         } else {
@@ -47,7 +47,7 @@ export default function App() {
           await setDoc(docRef, newProfile);
           setProfile(newProfile);
         }
-        
+
         // Redirect to dashboard if on auth or landing page
         if (location.pathname === '/auth' || location.pathname === '/') {
           if (firebaseUser.emailVerified) {
@@ -107,19 +107,17 @@ export default function App() {
 
     return (
       <div
-  className={`min-h-screen flex flex-col transition-all duration-500 ${
-    darkMode
-      ? 'bg-[#071028] text-white'
-      : 'bg-slate-50 text-slate-900'
-  }`}
->
+        className={`min-h-screen flex flex-col transition-all duration-500 ${darkMode
+            ? 'bg-[#071028] text-white'
+            : 'bg-slate-50 text-slate-900'
+          }`}
+      >
         <nav
-  className={`sticky top-0 z-50 border-b backdrop-blur-2xl transition-all duration-500 ${
-    darkMode
-      ? 'bg-[#071028]/80 border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.45)]'
-      : 'bg-white/80 border-slate-200'
-  }`}
->
+          className={`sticky top-0 z-50 border-b backdrop-blur-2xl transition-all duration-500 ${darkMode
+              ? 'bg-[#071028]/80 border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.45)]'
+              : 'bg-white/80 border-slate-200'
+            }`}
+        >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16">
               <div className="flex items-center gap-2">
@@ -130,27 +128,26 @@ export default function App() {
               </div>
 
               <div className="flex items-center gap-4">
-                <button 
+                <button
                   onClick={toggleDarkMode}
-                  className={`p-3 rounded-2xl transition-all duration-300 border ${
-  darkMode
-    ? 'bg-white/5 border-white/10 text-yellow-300 hover:bg-white/10 shadow-lg shadow-indigo-500/10'
-    : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-100'
-}`}
+                  className={`p-3 rounded-2xl transition-all duration-300 border ${darkMode
+                      ? 'bg-white/5 border-white/10 text-yellow-300 hover:bg-white/10 shadow-lg shadow-indigo-500/10'
+                      : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-100'
+                    }`}
                 >
                   {darkMode ? <Sun size={20} /> : <Moon size={20} />}
                 </button>
 
                 {profile.role === 'student' && profile.learningStyle !== 'none' && (
                   <div className="hidden md:flex items-center gap-6 mr-4">
-                    <button 
+                    <button
                       onClick={() => navigate('/')}
                       className={`flex items-center gap-2 text-sm font-medium ${location.pathname === '/' ? 'text-indigo-600' : 'text-slate-500 hover:text-indigo-600'}`}
                     >
                       <LayoutDashboard className="w-4 h-4" />
                       Dashboard
                     </button>
-                    <button 
+                    <button
                       onClick={() => navigate('/quiz')}
                       className={`flex items-center gap-2 text-sm font-medium ${location.pathname === '/quiz' ? 'text-indigo-600' : 'text-slate-500 hover:text-indigo-600'}`}
                     >
@@ -178,14 +175,14 @@ export default function App() {
         </nav>
 
         <main className="relative flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
-  
-  {darkMode && (
-    <>
-      <div className="absolute top-0 left-0 w-96 h-96 bg-indigo-500/10 blur-3xl rounded-full pointer-events-none" />
 
-      <div className="absolute bottom-0 right-0 w-[30rem] h-[30rem] bg-cyan-500/10 blur-3xl rounded-full pointer-events-none" />
-    </>
-  )}
+          {darkMode && (
+            <>
+              <div className="absolute top-0 left-0 w-96 h-96 bg-indigo-500/10 blur-3xl rounded-full pointer-events-none" />
+
+              <div className="absolute bottom-0 right-0 w-[30rem] h-[30rem] bg-cyan-500/10 blur-3xl rounded-full pointer-events-none" />
+            </>
+          )}
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}
@@ -211,16 +208,16 @@ export default function App() {
         <Route path="/quiz" element={<ProtectedLayout><Quiz onComplete={() => navigate('/dashboard')} /></ProtectedLayout>} />
         <Route path="/module/:id" element={
           <ProtectedLayout>
-            <ModuleViewer 
-              moduleId={location.pathname.split('/').pop() || ''} 
-              onBack={() => navigate('/dashboard')} 
+            <ModuleViewer
+              moduleId={location.pathname.split('/').pop() || ''}
+              onBack={() => navigate('/dashboard')}
             />
           </ProtectedLayout>
         } />
         <Route path="/dashboard" element={
           <ProtectedLayout>
-            {profile?.role === 'teacher' ? 
-              <TeacherDashboard /> : 
+            {profile?.role === 'teacher' ?
+              <TeacherDashboard /> :
               <Dashboard onSelectModule={(module) => navigate(`/module/${module.module_id}`, { state: { module } })} />
             }
           </ProtectedLayout>

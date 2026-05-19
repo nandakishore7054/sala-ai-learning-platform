@@ -5,7 +5,7 @@ import { askChatAgent } from '../services/geminiService';
 
 export default function ChatAgent() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<{role: 'user' | 'agent', text: string}[]>([]);
+  const [messages, setMessages] = useState<{ role: 'user' | 'agent', text: string }[]>([]);
   const [inputTitle, setInputTitle] = useState('');
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -51,7 +51,7 @@ export default function ChatAgent() {
                 <Bot size={24} />
                 <h3 className="font-semibold text-lg">AI Assistant</h3>
               </div>
-              <button 
+              <button
                 onClick={() => setIsOpen(false)}
                 className="text-white/80 hover:text-white transition-colors"
               >
@@ -64,20 +64,19 @@ export default function ChatAgent() {
               {messages.length === 0 && (
                 <div className="text-center text-slate-500 dark:text-slate-400 mt-10">
                   <Bot size={40} className="mx-auto mb-3 opacity-50" />
-                  <p>Hi! I'm your AI learning assistant.<br/>Ask me any question.</p>
+                  <p>Hi! I'm your AI learning assistant.<br />Ask me any question.</p>
                 </div>
               )}
               {messages.map((msg, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div 
-                    className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${
-                      msg.role === 'user' 
-                        ? 'bg-indigo-600 text-white rounded-br-none' 
+                  <div
+                    className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${msg.role === 'user'
+                        ? 'bg-indigo-600 text-white rounded-br-none'
                         : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 rounded-bl-none shadow-sm'
-                    }`}
+                      }`}
                   >
                     {msg.text}
                   </div>
@@ -103,7 +102,7 @@ export default function ChatAgent() {
                 placeholder="Ask a question..."
                 className="flex-1 bg-slate-100 dark:bg-slate-700 border-transparent focus:bg-white dark:focus:bg-slate-800 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 rounded-xl px-4 py-2 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 outline-none transition-all"
               />
-              <button 
+              <button
                 type="submit"
                 disabled={!inputTitle.trim() || loading}
                 className="bg-indigo-600 text-white p-2 rounded-xl hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center shrink-0"

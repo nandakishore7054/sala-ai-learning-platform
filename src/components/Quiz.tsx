@@ -246,7 +246,7 @@ export default function Quiz({
                     {Math.round(
                       ((currentStep + 1) /
                         questions.length) *
-                        100
+                      100
                     )}
                     %
                   </div>
@@ -318,11 +318,10 @@ export default function Quiz({
                           )
                         }
                         disabled={loading}
-                        className={`group relative overflow-hidden rounded-3xl border transition-all duration-300 p-6 text-left ${
-                          isSelected
+                        className={`group relative overflow-hidden rounded-3xl border transition-all duration-300 p-6 text-left ${isSelected
                             ? "border-indigo-500 bg-indigo-500/10 shadow-xl shadow-indigo-500/20"
                             : "border-slate-200/70 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 hover:border-indigo-300 dark:hover:border-indigo-500"
-                        }`}
+                          }`}
                       >
                         {/* Glow */}
                         {isSelected && (
@@ -335,13 +334,12 @@ export default function Quiz({
 
                             {/* Icon */}
                             <div
-                              className={`w-16 h-16 rounded-3xl flex items-center justify-center transition-all ${
-                                option.style === "visual"
+                              className={`w-16 h-16 rounded-3xl flex items-center justify-center transition-all ${option.style === "visual"
                                   ? "bg-pink-500/10 text-pink-500"
                                   : option.style === "auditory"
-                                  ? "bg-cyan-500/10 text-cyan-500"
-                                  : "bg-emerald-500/10 text-emerald-500"
-                              }`}
+                                    ? "bg-cyan-500/10 text-cyan-500"
+                                    : "bg-emerald-500/10 text-emerald-500"
+                                }`}
                             >
                               {option.style === "visual" && (
                                 <Eye size={28} />

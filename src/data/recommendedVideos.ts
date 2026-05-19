@@ -117,7 +117,7 @@ export const recommendedVideos: Record<
       "https://img.youtube.com/vi/aircAruvnKk/maxresdefault.jpg",
   },
 
-    // =========================
+  // =========================
   // CSS FOUNDATIONS
   // =========================
 

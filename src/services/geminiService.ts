@@ -255,11 +255,10 @@ You are SALA AI Mentor.
 Student Profile:
 - Learning style: ${learningStyle}
 - Completed modules:
-${
-  completedModules.length > 0
-    ? completedModules.join(", ")
-    : "No modules completed yet"
-}
+${completedModules.length > 0
+        ? completedModules.join(", ")
+        : "No modules completed yet"
+      }
 
 Generate:
 3 personalized recommendations.
@@ -396,25 +395,25 @@ JSON FORMAT:
 
     const text = completion.choices[0]?.message?.content || "{}";
 
-try {
-  return JSON.parse(cleanJSON(text));
-} catch (parseError) {
-  console.error("JSON Parse Error:", parseError);
+    try {
+      return JSON.parse(cleanJSON(text));
+    } catch (parseError) {
+      console.error("JSON Parse Error:", parseError);
 
-  return {
-    visual_tip:
-      "Focus on identifying patterns and relationships visually 👀",
+      return {
+        visual_tip:
+          "Focus on identifying patterns and relationships visually 👀",
 
-    concept_map_summary:
-      "Break the concept into smaller connected visual blocks for easier understanding.",
+        concept_map_summary:
+          "Break the concept into smaller connected visual blocks for easier understanding.",
 
-    real_world_example:
-      "Think about how this concept appears in real applications you use daily.",
+        real_world_example:
+          "Think about how this concept appears in real applications you use daily.",
 
-    visual_explanation:
-      "Imagine the flow step-by-step like a visual roadmap connecting each idea together.",
-  };
-}
+        visual_explanation:
+          "Imagine the flow step-by-step like a visual roadmap connecting each idea together.",
+      };
+    }
   } catch (error) {
     console.error("Visual Enhancement Error:", error);
 

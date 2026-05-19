@@ -3,27 +3,27 @@ import { db, auth } from '../firebase';
 import { doc, getDoc, onSnapshot, updateDoc, collection, query, where, getDocs, setDoc } from 'firebase/firestore';
 import { UserProfile, UserStats, Module, DomainData } from '../types';
 import { generateDomainData, getRecommendations } from '../services/geminiService';
-import { 
-Trophy,
-Target,
-Zap,
-Sparkles,
-BookOpen,
-ChevronRight,
-Eye,
-Ear,
-Hand,
-Loader2,
-Search,
-Layout,
-Flame,
-BrainCircuit,
-TrendingUp,
-CalendarDays,
-Activity,
-Award,
-Clock3,
-Star
+import {
+  Trophy,
+  Target,
+  Zap,
+  Sparkles,
+  BookOpen,
+  ChevronRight,
+  Eye,
+  Ear,
+  Hand,
+  Loader2,
+  Search,
+  Layout,
+  Flame,
+  BrainCircuit,
+  TrendingUp,
+  CalendarDays,
+  Activity,
+  Award,
+  Clock3,
+  Star
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -141,7 +141,7 @@ export default function Dashboard({ onSelectModule }: { onSelectModule: (module:
         if (profile.domain && modules.length === 0) {
           await handleDomainSelect(profile.domain);
         }
-        
+
         setLoading(false);
       };
       fetchInitialData();
@@ -150,10 +150,10 @@ export default function Dashboard({ onSelectModule }: { onSelectModule: (module:
 
   const handleDomainSelect = async (domain: string) => {
     if (!profile) return;
-    
+
     setGeneratingModules(true);
     setModules([]); // Clear existing modules while loading
-    
+
     try {
       // Update profile domain in Firestore if changed
       if (profile.domain !== domain) {
@@ -164,7 +164,7 @@ export default function Dashboard({ onSelectModule }: { onSelectModule: (module:
       const cacheKey = `${domain.toLowerCase().replace(/\s+/g, '-')}-${profile.learningStyle}`;
       const cacheRef = doc(db, 'learning_paths', cacheKey);
       const cacheSnap = await getDoc(cacheRef);
-      
+
       const cachedModules = cacheSnap.exists() ? cacheSnap.data().modules : [];
 
       if (Array.isArray(cachedModules) && cachedModules.length > 0) {
@@ -172,7 +172,7 @@ export default function Dashboard({ onSelectModule }: { onSelectModule: (module:
       } else {
         // Generate new modules
         let generatedModules: Module[] = [];
-        
+
         // Use starter modules for AI to ensure high quality initial content
         if (domain === "Artificial Intelligence") {
           generatedModules = [...STARTER_AI_MODULES];
@@ -181,7 +181,7 @@ export default function Dashboard({ onSelectModule }: { onSelectModule: (module:
         try {
           const generated = await generateDomainData(domain, profile.learningStyle);
           // Filter out any duplicates if we have starter modules
-          const newModules = (generated.modules || []).filter(m => 
+          const newModules = (generated.modules || []).filter(m =>
             !generatedModules.some(sm => sm.module_id === m.module_id || sm.module_title === m.module_title)
           );
           generatedModules = [...generatedModules, ...newModules];
@@ -195,7 +195,7 @@ export default function Dashboard({ onSelectModule }: { onSelectModule: (module:
         }
 
         setModules(generatedModules);
-        
+
         // Save to learning_paths for cache
         if (generatedModules.length > 0) {
           await setDoc(cacheRef, {
@@ -227,173 +227,173 @@ export default function Dashboard({ onSelectModule }: { onSelectModule: (module:
 
   return (
     <div className="space-y-10 pb-20 relative">
-{/* PREMIUM HERO */}
-<motion.div
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.6 }}
-  className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-indigo-600 via-violet-600 to-cyan-500 p-10 md:p-14 shadow-[0_0_80px_rgba(99,102,241,0.35)]"
->
-  {/* BACKGROUND GLOW */}
-  <div className="absolute top-0 left-0 w-96 h-96 bg-white/10 blur-3xl rounded-full" />
+      {/* PREMIUM HERO */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-indigo-600 via-violet-600 to-cyan-500 p-10 md:p-14 shadow-[0_0_80px_rgba(99,102,241,0.35)]"
+      >
+        {/* BACKGROUND GLOW */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-white/10 blur-3xl rounded-full" />
 
-  <div className="relative z-10 flex flex-col xl:flex-row justify-between gap-10">
-    {/* LEFT */}
-    <div className="flex-1">
-      <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-xl border border-white/10 px-5 py-3 rounded-2xl mb-8">
-        <BrainCircuit className="text-cyan-200" />
+        <div className="relative z-10 flex flex-col xl:flex-row justify-between gap-10">
+          {/* LEFT */}
+          <div className="flex-1">
+            <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-xl border border-white/10 px-5 py-3 rounded-2xl mb-8">
+              <BrainCircuit className="text-cyan-200" />
 
-        <span className="text-white font-semibold">
-          AI Adaptive Workspace
-        </span>
-      </div>
+              <span className="text-white font-semibold">
+                AI Adaptive Workspace
+              </span>
+            </div>
 
-      <h1 className="text-5xl md:text-6xl font-black text-white leading-tight mb-6">
-        Welcome back,
-        <br />
+            <h1 className="text-5xl md:text-6xl font-black text-white leading-tight mb-6">
+              Welcome back,
+              <br />
 
-        <span className="text-cyan-200">
-          {profile.name}
-        </span>
-      </h1>
+              <span className="text-cyan-200">
+                {profile.name}
+              </span>
+            </h1>
 
-      <p className="text-indigo-100 text-lg max-w-2xl leading-relaxed">
-        Continue your personalized AI-powered learning journey tailored to your{" "}
-        <span className="font-bold text-white capitalize">
-          {profile.learningStyle}
-        </span>{" "}
-        learning style.
-      </p>
-
-      {/* STATS */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mt-10">
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-5 border border-white/10">
-          <div className="flex items-center justify-between mb-3">
-            <Trophy className="text-yellow-300" />
-            <span className="text-xs text-white/70">
-              XP
-            </span>
-          </div>
-
-          <h2 className="text-3xl font-black text-white">
-            {profile.points}
-          </h2>
-        </div>
-
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-5 border border-white/10">
-          <div className="flex items-center justify-between mb-3">
-            <Award className="text-pink-300" />
-            <span className="text-xs text-white/70">
-              Badges
-            </span>
-          </div>
-
-          <h2 className="text-3xl font-black text-white">
-            {(profile.badges || []).length}
-          </h2>
-        </div>
-
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-5 border border-white/10">
-          <div className="flex items-center justify-between mb-3">
-            <Flame className="text-orange-300" />
-            <span className="text-xs text-white/70">
-              Streak
-            </span>
-          </div>
-
-          <h2 className="text-3xl font-black text-white">
-            7
-          </h2>
-        </div>
-
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-5 border border-white/10">
-          <div className="flex items-center justify-between mb-3">
-            <TrendingUp className="text-emerald-300" />
-            <span className="text-xs text-white/70">
-              Progress
-            </span>
-          </div>
-
-          <h2 className="text-3xl font-black text-white">
-            82%
-          </h2>
-        </div>
-      </div>
-    </div>
-
-    {/* RIGHT SIDE */}
-    <div className="w-full xl:w-[380px]">
-      <div className="bg-white/10 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-8 shadow-2xl">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <p className="text-indigo-100 text-sm">
-              Weekly Goal
+            <p className="text-indigo-100 text-lg max-w-2xl leading-relaxed">
+              Continue your personalized AI-powered learning journey tailored to your{" "}
+              <span className="font-bold text-white capitalize">
+                {profile.learningStyle}
+              </span>{" "}
+              learning style.
             </p>
 
-            <h3 className="text-3xl font-black text-white">
-              5/7 Completed
-            </h3>
+            {/* STATS */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mt-10">
+              <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-5 border border-white/10">
+                <div className="flex items-center justify-between mb-3">
+                  <Trophy className="text-yellow-300" />
+                  <span className="text-xs text-white/70">
+                    XP
+                  </span>
+                </div>
+
+                <h2 className="text-3xl font-black text-white">
+                  {profile.points}
+                </h2>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-5 border border-white/10">
+                <div className="flex items-center justify-between mb-3">
+                  <Award className="text-pink-300" />
+                  <span className="text-xs text-white/70">
+                    Badges
+                  </span>
+                </div>
+
+                <h2 className="text-3xl font-black text-white">
+                  {(profile.badges || []).length}
+                </h2>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-5 border border-white/10">
+                <div className="flex items-center justify-between mb-3">
+                  <Flame className="text-orange-300" />
+                  <span className="text-xs text-white/70">
+                    Streak
+                  </span>
+                </div>
+
+                <h2 className="text-3xl font-black text-white">
+                  7
+                </h2>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-5 border border-white/10">
+                <div className="flex items-center justify-between mb-3">
+                  <TrendingUp className="text-emerald-300" />
+                  <span className="text-xs text-white/70">
+                    Progress
+                  </span>
+                </div>
+
+                <h2 className="text-3xl font-black text-white">
+                  82%
+                </h2>
+              </div>
+            </div>
           </div>
 
-          <div className="w-20 h-20 rounded-full border-[6px] border-cyan-300 flex items-center justify-center text-white font-black text-xl">
-            71%
+          {/* RIGHT SIDE */}
+          <div className="w-full xl:w-[380px]">
+            <div className="bg-white/10 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-8 shadow-2xl">
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <p className="text-indigo-100 text-sm">
+                    Weekly Goal
+                  </p>
+
+                  <h3 className="text-3xl font-black text-white">
+                    5/7 Completed
+                  </h3>
+                </div>
+
+                <div className="w-20 h-20 rounded-full border-[6px] border-cyan-300 flex items-center justify-center text-white font-black text-xl">
+                  71%
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="bg-white/10 rounded-2xl p-4 border border-white/10">
+                  <div className="flex items-center gap-3">
+                    <Activity className="text-cyan-300" />
+
+                    <div>
+                      <p className="text-white font-semibold">
+                        Productivity
+                      </p>
+
+                      <p className="text-indigo-100 text-sm">
+                        You are learning faster than 82% students.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white/10 rounded-2xl p-4 border border-white/10">
+                  <div className="flex items-center gap-3">
+                    <CalendarDays className="text-pink-300" />
+
+                    <div>
+                      <p className="text-white font-semibold">
+                        Next Goal
+                      </p>
+
+                      <p className="text-indigo-100 text-sm">
+                        Finish 2 modules this week.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white/10 rounded-2xl p-4 border border-white/10">
+                  <div className="flex items-center gap-3">
+                    <Clock3 className="text-yellow-300" />
+
+                    <div>
+                      <p className="text-white font-semibold">
+                        Study Time
+                      </p>
+
+                      <p className="text-indigo-100 text-sm">
+                        12h 45m this week.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div className="space-y-4">
-          <div className="bg-white/10 rounded-2xl p-4 border border-white/10">
-            <div className="flex items-center gap-3">
-              <Activity className="text-cyan-300" />
-
-              <div>
-                <p className="text-white font-semibold">
-                  Productivity
-                </p>
-
-                <p className="text-indigo-100 text-sm">
-                  You are learning faster than 82% students.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white/10 rounded-2xl p-4 border border-white/10">
-            <div className="flex items-center gap-3">
-              <CalendarDays className="text-pink-300" />
-
-              <div>
-                <p className="text-white font-semibold">
-                  Next Goal
-                </p>
-
-                <p className="text-indigo-100 text-sm">
-                  Finish 2 modules this week.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white/10 rounded-2xl p-4 border border-white/10">
-            <div className="flex items-center gap-3">
-              <Clock3 className="text-yellow-300" />
-
-              <div>
-                <p className="text-white font-semibold">
-                  Study Time
-                </p>
-
-                <p className="text-indigo-100 text-sm">
-                  12h 45m this week.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</motion.div>
-<div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
+      </motion.div>
+      <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
         {/* Left Column: Domain Selection & Modules */}
         <div className="xl:col-span-3 space-y-8">
           {/* Domain Selection */}
@@ -408,11 +408,10 @@ export default function Dashboard({ onSelectModule }: { onSelectModule: (module:
                   key={domain}
                   onClick={() => handleDomainSelect(domain)}
                   disabled={generatingModules}
-                  className={`group relative overflow-hidden px-5 py-4 rounded-2xl font-bold transition-all duration-300 border ${
-  profile.domain === domain
-    ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white border-transparent shadow-[0_0_25px_rgba(99,102,241,0.4)]'
-    : 'bg-slate-100 hover:bg-white border-transparent hover:border-indigo-200 text-slate-700'
-}`}
+                  className={`group relative overflow-hidden px-5 py-4 rounded-2xl font-bold transition-all duration-300 border ${profile.domain === domain
+                      ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white border-transparent shadow-[0_0_25px_rgba(99,102,241,0.4)]'
+                      : 'bg-slate-100 hover:bg-white border-transparent hover:border-indigo-200 text-slate-700'
+                    }`}
                 >
                   {domain}
                 </button>
@@ -449,11 +448,10 @@ export default function Dashboard({ onSelectModule }: { onSelectModule: (module:
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => onSelectModule(module)}
-                      className={`p-7 rounded-[2rem] bg-white/80 backdrop-blur-xl border border-white/30 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 transition-all cursor-pointer flex flex-col justify-between h-full ${
-                        isCompleted 
-                          ? 'bg-green-50 border-green-200' 
+                      className={`p-7 rounded-[2rem] bg-white/80 backdrop-blur-xl border border-white/30 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 transition-all cursor-pointer flex flex-col justify-between h-full ${isCompleted
+                          ? 'bg-green-50 border-green-200'
                           : 'bg-slate-50 border-transparent hover:border-indigo-600'
-                      }`}
+                        }`}
                     >
                       <div>
                         <div className="flex justify-between items-start mb-2">
